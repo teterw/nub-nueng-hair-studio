@@ -1,0 +1,98 @@
+@import "tailwindcss";
+
+@theme {
+  /* Sampled directly out of logo.jpg — these are the shop's own two colours. */
+  --color-cream: #f2e8df;
+  --color-coffee: #3e1f02;
+  /* Recessed surfaces: gallery tiles, review placeholders. */
+  --color-paper: #e7d8ca;
+  /* Rules and marks only — 2.9:1 on cream, so never used for text. */
+  --color-brass: #a07d42;
+  /* The text-safe brass: 5.2:1 on cream, 4.7:1 on paper. */
+  --color-brass-ink: #7a5a24;
+  --color-line: rgba(62, 31, 2, 0.16);
+  --color-line-strong: rgba(62, 31, 2, 0.34);
+
+  --font-display: var(--font-chonburi), Georgia, serif;
+  --font-body: var(--font-anuphan), ui-sans-serif, system-ui, sans-serif;
+}
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Keep anchored sections clear of the sticky call bar on small screens. */
+  scroll-padding-block-start: 1.5rem;
+}
+
+body {
+  background-color: var(--color-cream);
+  color: var(--color-coffee);
+  font-family: var(--font-body);
+  /* Thai needs more leading than Latin to keep tone marks from crowding. */
+  line-height: 1.85;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+
+  /* Faint paper tooth, so the flat cream reads as printed stock. */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+}
+
+/* Chonburi is a single-weight display face; never let the browser fake a bold. */
+.font-display {
+  font-weight: 400;
+  line-height: 1.35;
+  letter-spacing: 0.01em;
+}
+
+/* One visible focus treatment everywhere, brand-coloured rather than the UA blue. */
+:focus-visible {
+  outline: 2px solid var(--color-coffee);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* The single orchestrated moment: the hero stroke draws itself once on load. */
+@keyframes draw-stroke {
+  from {
+    stroke-dashoffset: var(--stroke-len);
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.hero-stroke path {
+  stroke-dasharray: var(--stroke-len);
+  stroke-dashoffset: var(--stroke-len);
+  animation: draw-stroke 2.2s cubic-bezier(0.33, 0.1, 0.25, 1) forwards;
+}
+
+.hero-stroke path:nth-child(2) {
+  animation-delay: 0.32s;
+}
+
+.hero-stroke path:nth-child(3) {
+  animation-delay: 0.6s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .hero-stroke path {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
