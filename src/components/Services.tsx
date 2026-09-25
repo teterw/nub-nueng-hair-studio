@@ -12,11 +12,11 @@ export function Services() {
       <div className="mt-8 grid gap-x-14 gap-y-9 sm:grid-cols-2">
         {shop.services.map((group) => (
           <div key={group.id}>
-            <h3 className="text-[1.0625rem] font-semibold">{group.title}</h3>
+            <h3 className="font-semibold leading-snug">{group.title}</h3>
 
             <dl className="mt-2">
               {group.items.map((item) => (
-                <div key={item.name} className="py-1.5">
+                <div key={item.name} className="py-1 leading-relaxed">
                   <div className="flex items-baseline gap-2">
                     <dt className="shrink-0">{item.name}</dt>
                     <span

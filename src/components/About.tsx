@@ -4,7 +4,8 @@ import { Section } from "./ui";
 export function About() {
   return (
     <Section id="about" title={shop.about.heading}>
-      <div className="mt-6 max-w-[46ch] space-y-4">
+      {/* The only real prose on the page, so it keeps the looser Thai leading. */}
+      <div className="mt-6 max-w-[46ch] space-y-4 leading-[1.85]">
         {shop.about.paragraphs.map((text) => (
           <p key={text}>{text}</p>
         ))}

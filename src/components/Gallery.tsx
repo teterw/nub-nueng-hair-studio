@@ -40,10 +40,7 @@ export function Gallery() {
             ) : (
               <div className="flex h-full flex-col items-center justify-center gap-3 p-3 text-center">
                 <HairGlyph glyph={tile.glyph} />
-                <div>
-                  <p className="text-sm leading-snug">{tile.caption}</p>
-                  <p className="text-xs leading-snug text-brass-ink">รูปผลงาน</p>
-                </div>
+                <p className="text-sm leading-snug">{tile.caption}</p>
               </div>
             )}
           </li>

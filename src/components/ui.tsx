@@ -33,7 +33,7 @@ export function Section({
       <div className={`mx-auto w-full max-w-4xl py-14 sm:py-20 ${bleed ? "" : "px-5 sm:px-8"}`}>
         <h2
           id={`${id}-title`}
-          className={`font-display text-[1.7rem] sm:text-[2.2rem] ${bleed ? "px-5 sm:px-8" : ""}`}
+          className={`font-display text-[1.5rem] sm:text-[1.9rem] ${bleed ? "px-5 sm:px-8" : ""}`}
         >
           {title}
         </h2>

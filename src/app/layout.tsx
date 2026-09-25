@@ -1,18 +1,19 @@
 import type { Metadata, Viewport } from "next";
-import { Anuphan, Chonburi } from "next/font/google";
+import { Anuphan, Trirong } from "next/font/google";
 import { shop } from "@/data/shop";
 import "./globals.css";
 
 /**
- * Chonburi — display only. A Thai face drawn from vintage shop-sign lettering,
- * with the thick/thin stroke contrast that echoes the brush line in the logo.
- * Single weight (400), so it is used sparingly: the shop name and section titles.
+ * Trirong — display only. A Thai serif whose thick/thin modulation echoes the
+ * brush line of the logo, where a heavier signage face just shouts. One weight
+ * is loaded on purpose: it sets the shop name and the section titles, nothing
+ * else, so there is no second weight to keep in step.
  */
-const chonburi = Chonburi({
-  weight: "400",
+const trirong = Trirong({
+  weight: "600",
   subsets: ["thai", "latin"],
   display: "swap",
-  variable: "--font-chonburi",
+  variable: "--font-trirong",
 });
 
 /**
@@ -55,7 +56,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="th" className={`${chonburi.variable} ${anuphan.variable}`}>
+    <html lang="th" className={`${trirong.variable} ${anuphan.variable}`}>
       <body className="antialiased">{children}</body>
     </html>
   );

@@ -20,12 +20,12 @@ export function Hero() {
           className="mx-auto h-32 w-32 sm:h-40 sm:w-40"
         />
 
-        <h1 className="font-display mt-2 text-[1.95rem] sm:text-[3.1rem]">{shop.name}</h1>
+        <h1 className="font-display mt-2 text-[2rem] sm:text-[3.05rem]">{shop.name}</h1>
 
         <p className="mx-auto mt-3 max-w-[32ch] text-[1.0625rem] text-balance sm:max-w-[40ch] sm:text-[1.1875rem]">
           {shop.tagline}
         </p>
-        <p className="mt-1 text-sm text-coffee/70">
+        <p className="mt-2 text-sm leading-snug text-coffee/70">
           {shop.subline.map((line) => (
             <span key={line} className="block">
               {line}
