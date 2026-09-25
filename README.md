@@ -88,10 +88,11 @@ any static host — build command `npm run build`, output directory `out`.
 - **Colour** is sampled from the logo file itself: coffee `#3E1F02` on cream
   `#F2E8DF`, with `#A07D42` brass for rules and `#7A5A24` where brass carries
   text (the lighter brass fails contrast at small sizes).
-- **Type** is Chonburi for display and Anuphan for body. Chonburi is drawn from
-  vintage Thai shop-sign lettering and has the stroke contrast of the logo's
-  brush line; it is single-weight, so it only sets the shop name and section
-  titles.
+- **Type** is Trirong for display and Anuphan for body. Trirong is a Thai serif
+  whose thick/thin modulation is the same move the logo makes with a brush line,
+  so the display type belongs to the brand rather than just sitting near it.
+  Only one weight (600) is loaded, and it sets the shop name and section titles
+  and nothing else.
 - **The line is the signature.** The logo is one continuous stroke, so the page
   is built from hairlines instead of shadowed cards — services are an old salon
   price board with dotted leaders, not a card grid.
