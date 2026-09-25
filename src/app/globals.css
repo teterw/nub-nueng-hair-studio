@@ -51,10 +51,16 @@ body {
 :focus-visible {
   outline: 2px solid var(--color-coffee);
   outline-offset: 3px;
-  border-radius: 2px;
 }
 
-/* The single orchestrated moment: the hero stroke draws itself once on load. */
+/* The single orchestrated moment: the hero strokes draw themselves once on load.
+ *
+ * The resting state is fully drawn (offset 0) and the animation only reveals
+ * them, via `backwards` fill. Written the other way round — hidden at rest,
+ * revealed by the animation — the strokes vanish entirely wherever animations
+ * do not run (throttled background tabs, animation-blocking extensions). This
+ * way the worst case is that they simply appear without drawing.
+ */
 @keyframes draw-stroke {
   from {
     stroke-dashoffset: var(--stroke-len);
@@ -66,8 +72,8 @@ body {
 
 .hero-stroke path {
   stroke-dasharray: var(--stroke-len);
-  stroke-dashoffset: var(--stroke-len);
-  animation: draw-stroke 2.2s cubic-bezier(0.33, 0.1, 0.25, 1) forwards;
+  stroke-dashoffset: 0;
+  animation: draw-stroke 2.2s cubic-bezier(0.33, 0.1, 0.25, 1) backwards;
 }
 
 .hero-stroke path:nth-child(2) {
@@ -85,7 +91,6 @@ body {
 
   .hero-stroke path {
     animation: none;
-    stroke-dashoffset: 0;
   }
 
   *,
