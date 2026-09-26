@@ -181,6 +181,194 @@
 }
 
 /* ---------------------------------------------------------------------------
+   The five page formats
+   A second axis, independent of the colour styles above: these re-arrange the
+   same markup rather than recolouring it. All but the section menu are pure
+   CSS, which is why any format composes with any style.
+   --------------------------------------------------------------------------- */
+
+/* The menu only exists in the มีเมนู format. display:none takes it out of the
+   accessibility tree too, so the other formats have nothing hidden to trip on. */
+.site-nav {
+  display: none;
+}
+
+[data-layout="nav"] .site-nav {
+  display: block;
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  border-bottom: 1px solid var(--color-line);
+  background-color: color-mix(in oklab, var(--color-bg) 92%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+.site-nav-list {
+  display: flex;
+  gap: 0.25rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  margin-inline: auto;
+  max-width: 64rem;
+  padding: 0.5rem 0.75rem;
+}
+
+.site-nav-list::-webkit-scrollbar {
+  display: none;
+}
+
+/* The design picker floats in the same corner, but only overlaps the menu when
+   the screen is narrow — on desktop the menu is centred well clear of it, and
+   reserving space at every width pushed it visibly off-centre.
+
+   The reserve goes on the nav, not on the scrolling list: padding inside an
+   overflow-x container sits at the end of the scroll content, so links still
+   slid underneath the button. Shrinking the scrollport is what actually keeps
+   them out from under it. */
+@media (max-width: 899px) {
+  [data-layout="nav"] .site-nav {
+    padding-right: 9.5rem;
+  }
+}
+
+.site-nav-link {
+  display: block;
+  white-space: nowrap;
+  border-radius: var(--radius);
+  padding: 0.4rem 0.7rem;
+  font-size: 0.875rem;
+  line-height: 1.2;
+  transition: background-color 150ms;
+}
+
+.site-nav-link:hover {
+  background-color: color-mix(in oklab, var(--color-ink) 8%, transparent);
+}
+
+/* Anchors must land below the sticky bar, not behind it. */
+[data-layout="nav"] {
+  scroll-padding-block-start: 4.5rem;
+}
+
+[data-layout="nav"] .site-hero {
+  padding-top: 0.5rem;
+}
+
+/* สองฝั่ง — the hero becomes a standing panel and the content scrolls past it.
+   Phones keep the stacked layout: a sticky half-screen panel on a 375px screen
+   would leave almost nothing to read. */
+@media (min-width: 900px) {
+  [data-layout="split"] .site-shell {
+    display: grid;
+    grid-template-columns: minmax(18rem, 23rem) 1fr;
+    align-items: start;
+  }
+
+  [data-layout="split"] .site-hero {
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100vh;
+    border-right: 1px solid var(--color-line);
+  }
+
+  [data-layout="split"] .site-hero-body {
+    padding-top: 0;
+  }
+
+  [data-layout="split"] .site-hero h1 {
+    font-size: 2.25rem;
+  }
+
+  [data-layout="split"] .site-main,
+  [data-layout="split"] .site-footer {
+    grid-column: 2;
+  }
+
+  /* The first section sits against the panel top, so it does not need a rule. */
+  [data-layout="split"] .site-main > .site-section:first-child {
+    border-top: 0;
+  }
+
+  [data-layout="split"] .site-section-inner {
+    padding-inline: 2.5rem;
+  }
+
+  [data-layout="split"] .site-section-inner > .px-5 {
+    padding-inline: 0;
+  }
+}
+
+/* การ์ด — each section becomes its own panel. The rules between sections go,
+   because the gaps are already doing that work. */
+[data-layout="cards"] .site-section {
+  border-top: 0;
+  border: 1px solid var(--color-line);
+  border-radius: calc(var(--radius) + 10px);
+  background-color: color-mix(in oklab, var(--color-surface) 50%, var(--color-bg));
+  margin: 0.75rem;
+  overflow: hidden;
+}
+
+[data-layout="cards"] .site-section-inner {
+  padding-block: 2.5rem;
+}
+
+@media (min-width: 640px) {
+  [data-layout="cards"] .site-section {
+    max-width: 64rem;
+    margin: 1rem auto;
+  }
+
+  [data-layout="cards"] .site-section-inner {
+    padding-block: 3.5rem;
+  }
+}
+
+[data-layout="cards"] .site-footer {
+  border-top: 0;
+}
+
+/* Tiles inside a card read better outlined than filled — two nested fills of
+   the same surface colour just look like a rendering mistake. */
+[data-layout="cards"] .site-section .bg-surface\/70 {
+  background-color: transparent;
+}
+
+/* โชว์ผลงาน — work before prices, and the tiles get room to be looked at.
+   Ordering is done in CSS so the markup order stays the reading order for
+   anything that ignores the styles. */
+[data-layout="showcase"] .site-main {
+  display: flex;
+  flex-direction: column;
+}
+
+[data-layout="showcase"] #gallery {
+  order: -1;
+  border-top: 0;
+}
+
+[data-layout="showcase"] #gallery li {
+  aspect-ratio: 1 / 1;
+}
+
+@media (min-width: 640px) {
+  /* Three columns, not four: the 2x2 lead tile plus the remaining five then
+     pack into an exact 3x3 with no stranded tile on a row of its own. */
+  [data-layout="showcase"] #gallery ul {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  /* One tile leads, the rest fall in around it. */
+  [data-layout="showcase"] #gallery li:first-child {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+}
+
+/* ---------------------------------------------------------------------------
    Base
    --------------------------------------------------------------------------- */
 

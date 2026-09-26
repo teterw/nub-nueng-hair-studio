@@ -2,7 +2,7 @@ import { shop } from "@/data/shop";
 
 export function Footer() {
   return (
-    <footer className="border-t border-line">
+    <footer className="site-footer border-t border-line">
       <div className="mx-auto w-full max-w-4xl px-5 py-12 sm:px-8">
         <p className="font-display text-xl">{shop.name}</p>
 

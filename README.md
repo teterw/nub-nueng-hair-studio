@@ -59,11 +59,16 @@ Resize to roughly **1000px on the long edge** before committing. The site uses
 `images: { unoptimized: true }` (required for static export), so whatever you
 commit is what phones download.
 
-## Choosing a style
+## Choosing a look
 
-The demo ships with six complete looks, switchable from the **เปลี่ยนสไตล์**
-button in the top-right corner. Same content in every one — only the palette,
-the two typefaces, the corner radius and how the hero strokes are drawn change.
+The demo offers two independent choices from the **ปรับหน้าตา** button in the
+top-right corner: a colour style and a page format. The content is identical in
+every combination — only presentation changes.
+
+### Colour styles
+
+Six of them. Each swaps the palette, both typefaces, the corner radius and how
+the hero strokes are drawn.
 
 | id | ชื่อ | what it's going for |
 |----|------|---------------------|
@@ -74,21 +79,50 @@ the two typefaces, the corner radius and how the hero strokes are drawn change.
 | `studio` | สตูดิโอ | Crisp white, heavier display type, deep teal. |
 | `blush` | บูทีค | Ivory with a plum ink. Delicate without tipping into pink. |
 
-**Every style is a shareable link.** `?style=night` opens the page in that look,
-applied before the first paint so there is no flash. Send the owner six links
-instead of asking them to find the button:
+### Page formats
+
+The second axis. Five formats, picked independently of the colour style, so
+"what colour" and "what shape" are separate questions:
+
+| id | ชื่อ | what changes |
+|----|------|--------------|
+| `classic` | คลาสสิก | Stacked sections separated by hairlines. The default. |
+| `nav` | มีเมนู | A sticky menu of section links across the top. |
+| `split` | สองฝั่ง | On desktop the shop name and booking button stand in a sticky left panel while the content scrolls past. Phones keep the stacked layout. |
+| `cards` | การ์ด | Each section becomes its own panel with space around it. |
+| `showcase` | โชว์ผลงาน | Work before prices: the gallery moves under the hero and grows a lead tile. |
+
+Formats compose with styles: `?style=night&layout=cards` is a valid link, and
+all 30 pairings are checked for horizontal overflow at 375px and 1280px.
+
+Like the styles, a format is almost entirely CSS — `[data-layout="<id>"]` blocks
+in `globals.css` re-arrange the same markup. `showcase` reorders with CSS
+`order` rather than by moving components, so the markup order stays the reading
+order for anything that ignores the stylesheet. The section menu is the one
+piece needing real elements: it is always rendered and `display: none` in the
+other formats, which takes it out of the accessibility tree too.
+
+**On `showcase`:** it is the strongest format once there are real photos and the
+weakest while the gallery is still placeholders — it leads with six empty tiles.
+Worth showing the owner as "this is what we do once you send photos".
+
+### Shareable links
+
+Both axes are URL parameters, applied before the first paint so there is no
+flash. Send the owner a handful of links instead of asking them to find the
+button:
 
 ```
-https://<your-domain>/?style=vintage
-https://<your-domain>/?style=minimal
-https://<your-domain>/?style=night
-https://<your-domain>/?style=soft
-https://<your-domain>/?style=studio
-https://<your-domain>/?style=blush
+https://<your-domain>/?style=vintage&layout=classic
+https://<your-domain>/?style=night&layout=cards
+https://<your-domain>/?style=studio&layout=showcase
+https://<your-domain>/?style=minimal&layout=split
 ```
 
-A pick made with the button is remembered in `localStorage` and written into the
-URL, so the address bar always links to whatever is on screen.
+Either parameter can be used alone; the other falls back to whatever is saved,
+then to the default. Picks made with the button are remembered in
+`localStorage` and written into the URL, so the address bar always links to what
+is on screen.
 
 ### How it works
 
@@ -111,13 +145,16 @@ a near-black page.
 The picker is a tool for choosing, not part of the shop's site. To ship the
 chosen look:
 
-1. Delete `src/components/StyleSwitcher.tsx` and its two lines in
-   `src/app/page.tsx`.
+1. Delete `src/components/DesignPicker.tsx`, `src/components/LayoutGlyph.tsx`
+   and their lines in `src/app/page.tsx`.
 2. In `globals.css`, move the winning style's values into the `@theme` block and
-   delete all six `[data-theme]` blocks.
+   delete all six `[data-theme]` blocks. Keep the winning `[data-layout]` block
+   (and the `data-layout` attribute in `layout.tsx`) or inline its rules, then
+   delete the other four.
 3. In `src/app/layout.tsx`, delete the font definitions the winner doesn't use,
-   along with `themeInitScript` and the `<head>` script tag.
-4. Delete `src/data/themes.ts`.
+   along with `pickerScript`, `designInitScript` and the `<head>` script tag.
+4. Delete `src/data/themes.ts` and `src/data/layouts.ts`. If the winner is not
+   มีเมนู, also delete `src/components/SiteNav.tsx` and `shop.nav`.
 
 Worth doing rather than leaving: the demo declares eight typefaces so any style
 can be picked instantly. Only the active style's two are actually downloaded

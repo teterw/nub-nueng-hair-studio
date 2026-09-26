@@ -98,6 +98,17 @@ export const shop = {
     lineNote: "กรุณาแอดไลน์ก่อนทักแชท เพื่อให้ร้านเห็นข้อความ",
   },
 
+  /** Short labels for the section menu in the มีเมนู format. Deliberately
+   *  shorter than the section headings — a menu has less room than a title. */
+  nav: [
+    { href: "#services", label: "บริการ" },
+    { href: "#gallery", label: "ผลงาน" },
+    { href: "#about", label: "เกี่ยวกับร้าน" },
+    { href: "#reviews", label: "รีวิว" },
+    { href: "#hours", label: "เวลาเปิด" },
+    { href: "#contact", label: "ติดต่อ" },
+  ],
+
   services: [
     {
       id: "cut",

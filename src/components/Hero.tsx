@@ -4,10 +4,10 @@ import { HeroStroke } from "./HeroStroke";
 
 export function Hero() {
   return (
-    <header className="overflow-hidden">
+    <header className="site-hero overflow-hidden">
       {/* .hero-enter staggers its direct children in once on load, so the order
           of these five elements is also the order they arrive in. */}
-      <div className="hero-enter mx-auto w-full max-w-4xl px-5 pt-10 text-center sm:px-8 sm:pt-16">
+      <div className="hero-enter site-hero-body mx-auto w-full max-w-4xl px-5 pt-10 text-center sm:px-8 sm:pt-16">
         {/*
           Painted as a mask rather than an <img>, so the logo takes the ink
           colour of whichever style is active instead of staying brown on a dark
@@ -41,7 +41,7 @@ export function Hero() {
         </div>
       </div>
 
-      <div className="mt-6 sm:mt-10" aria-hidden="true">
+      <div className="site-hero-strokes mt-6 sm:mt-10" aria-hidden="true">
         <HeroStroke />
       </div>
     </header>

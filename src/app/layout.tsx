@@ -9,6 +9,7 @@ import {
   Pridi,
   Trirong,
 } from "next/font/google";
+import { defaultLayout, layoutStorageKey, layouts } from "@/data/layouts";
 import { defaultTheme, themeStorageKey, themes } from "@/data/themes";
 import { shop } from "@/data/shop";
 import "./globals.css";
@@ -132,33 +133,50 @@ export const viewport: Viewport = {
 };
 
 /**
- * Applies the saved style before the first paint, so reloading on a dark style
- * never flashes a cream page. Runs from `?style=` first, which is what makes a
- * link like `…/?style=night` shareable — hand the owner six links instead of
- * asking them to find the picker.
+ * Applies the saved style and format before the first paint, so reloading on a
+ * dark style never flashes a cream page. `?style=` and `?layout=` win over
+ * storage, which is what makes a link like `…/?style=night&layout=cards`
+ * shareable — hand the owner a handful of links instead of asking them to find
+ * the picker.
  *
  * Kept as a string and inlined on purpose: a React effect would run after
  * paint, which is exactly the flash this avoids.
  */
-const themeInitScript = `
-(function () {
+function pickerScript(
+  attr: string,
+  param: string,
+  storageKey: string,
+  ids: string[],
+  fallback: string,
+) {
+  return `
   try {
-    var ids = ${JSON.stringify(themes.map((t) => t.id))};
-    var fromUrl = new URLSearchParams(location.search).get("style");
-    var saved = localStorage.getItem(${JSON.stringify(themeStorageKey)});
-    var pick = ids.indexOf(fromUrl) > -1 ? fromUrl : (ids.indexOf(saved) > -1 ? saved : ${JSON.stringify(defaultTheme)});
-    document.documentElement.setAttribute("data-theme", pick);
+    var ids = ${JSON.stringify(ids)};
+    var fromUrl = new URLSearchParams(location.search).get(${JSON.stringify(param)});
+    var saved = localStorage.getItem(${JSON.stringify(storageKey)});
+    var pick = ids.indexOf(fromUrl) > -1 ? fromUrl
+      : (ids.indexOf(saved) > -1 ? saved : ${JSON.stringify(fallback)});
+    document.documentElement.setAttribute(${JSON.stringify(attr)}, pick);
   } catch (e) {
-    document.documentElement.setAttribute("data-theme", ${JSON.stringify(defaultTheme)});
-  }
-})();
-`;
+    document.documentElement.setAttribute(${JSON.stringify(attr)}, ${JSON.stringify(fallback)});
+  }`;
+}
+
+const designInitScript = `(function () {
+  ${pickerScript("data-theme", "style", themeStorageKey, themes.map((t) => t.id), defaultTheme)}
+  ${pickerScript("data-layout", "layout", layoutStorageKey, layouts.map((l) => l.id), defaultLayout)}
+})();`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="th" data-theme={defaultTheme} className={fontVariables}>
+    <html
+      lang="th"
+      data-theme={defaultTheme}
+      data-layout={defaultLayout}
+      className={fontVariables}
+    >
       <head>
-        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        <script dangerouslySetInnerHTML={{ __html: designInitScript }} />
       </head>
       <body className="antialiased">{children}</body>
     </html>
