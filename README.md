@@ -81,26 +81,49 @@ the hero strokes are drawn.
 
 ### Page formats
 
-The second axis. Five formats, picked independently of the colour style, so
-"what colour" and "what shape" are separate questions:
+The second axis. Nine formats, picked independently of the colour style. Nearly
+every visitor arrives from Facebook on a phone, so the picker leads with the
+ones whose whole point shows up there.
+
+**เน้นมือถือ — mobile-first**
+
+| id | ชื่อ | what changes |
+|----|------|--------------|
+| `app` | แบบแอป | A bottom tab bar with four destinations, replacing the plain LINE/call bar. Feels like an app, not a page. |
+| `swipe` | เลื่อนข้าง | Gallery and reviews become swipeable strips instead of stacks. Takes about 700px of scrolling out of the page. |
+| `fullscreen` | เต็มจอ | One topic per screen, snapping as you scroll, with titles set far larger. |
+| `compact` | กระชับ | Same content, much less scrolling: tighter rhythm, 3-up gallery, run-in headings. |
+
+**ทั่วไป — general**
 
 | id | ชื่อ | what changes |
 |----|------|--------------|
 | `classic` | คลาสสิก | Stacked sections separated by hairlines. The default. |
 | `nav` | มีเมนู | A sticky menu of section links across the top. |
-| `split` | สองฝั่ง | On desktop the shop name and booking button stand in a sticky left panel while the content scrolls past. Phones keep the stacked layout. |
+| `split` | สองฝั่ง | Desktop: the shop name and booking button stand in a sticky left panel while content scrolls past. Phone: a compact letterhead hero — logo beside the name — instead of a tall centred stack. |
 | `cards` | การ์ด | Each section becomes its own panel with space around it. |
 | `showcase` | โชว์ผลงาน | Work before prices: the gallery moves under the hero and grows a lead tile. |
 
-Formats compose with styles: `?style=night&layout=cards` is a valid link, and
-all 30 pairings are checked for horizontal overflow at 375px and 1280px.
+**Every format has one detail that belongs only to it**, so no two read as the
+same page with different spacing. Each treats the section title, the one element
+every format has in the same place: a short printed rule (`classic`), a tab-style
+accent bar (`app`), a card header divider (`cards`), a run-in rule to the edge
+(`compact`), an oversized title (`fullscreen`), a menu-matching pill (`nav`), a
+rule above rather than below (`split`), a quieted-down label so pictures lead
+(`showcase`), and for `swipe`, strips that fade out at the right edge to show
+there is more sideways.
+
+Formats compose with styles: `?style=night&layout=cards` is a valid link. All 54
+pairings are checked for horizontal overflow at 375px and 1280px, for the shop
+name and booking button surviving, for nothing sitting under the design picker,
+and for exactly one bottom bar being visible.
 
 Like the styles, a format is almost entirely CSS — `[data-layout="<id>"]` blocks
-in `globals.css` re-arrange the same markup. `showcase` reorders with CSS
-`order` rather than by moving components, so the markup order stays the reading
-order for anything that ignores the stylesheet. The section menu is the one
-piece needing real elements: it is always rendered and `display: none` in the
-other formats, which takes it out of the accessibility tree too.
+in `globals.css` re-arrange the same markup. `showcase` reorders with CSS `order`
+rather than by moving components, so the markup order stays the reading order for
+anything that ignores the stylesheet. The section menu and the app tab bar are
+the only pieces needing real elements: both render in every format and are
+`display: none` otherwise, which takes them out of the accessibility tree too.
 
 **On `showcase`:** it is the strongest format once there are real photos and the
 weakest while the gallery is still placeholders — it leads with six empty tiles.
@@ -150,11 +173,12 @@ chosen look:
 2. In `globals.css`, move the winning style's values into the `@theme` block and
    delete all six `[data-theme]` blocks. Keep the winning `[data-layout]` block
    (and the `data-layout` attribute in `layout.tsx`) or inline its rules, then
-   delete the other four.
+   delete the other eight.
 3. In `src/app/layout.tsx`, delete the font definitions the winner doesn't use,
    along with `pickerScript`, `designInitScript` and the `<head>` script tag.
 4. Delete `src/data/themes.ts` and `src/data/layouts.ts`. If the winner is not
-   มีเมนู, also delete `src/components/SiteNav.tsx` and `shop.nav`.
+   มีเมนู, also delete `src/components/SiteNav.tsx` and `shop.nav`; if it is not
+   แบบแอป, delete `src/components/AppTabBar.tsx`.
 
 Worth doing rather than leaving: the demo declares eight typefaces so any style
 can be picked instantly. Only the active style's two are actually downloaded

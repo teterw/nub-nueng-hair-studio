@@ -1,4 +1,5 @@
 import { About } from "@/components/About";
+import { AppTabBar } from "@/components/AppTabBar";
 import { Contact } from "@/components/Contact";
 import { DesignPicker } from "@/components/DesignPicker";
 import { Footer } from "@/components/Footer";
@@ -36,6 +37,7 @@ export default function Home() {
       </div>
 
       <StickyCallBar />
+      <AppTabBar />
       <DesignPicker />
     </>
   );

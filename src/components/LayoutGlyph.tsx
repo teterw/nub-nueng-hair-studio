@@ -35,6 +35,38 @@ const shapes: Record<Layout["id"], React.ReactNode> = {
       <rect x="4" y="21" width="20" height="5" rx="2" />
     </>
   ),
+  app: (
+    <>
+      <rect x="4" y="3" width="20" height="7" rx="1" />
+      <rect x="4" y="12" width="20" height="5" rx="1" />
+      <rect x="2" y="20" width="24" height="6" rx="1.5" />
+      <path d="M8 22.5v1M14 22.5v1M20 22.5v1" />
+    </>
+  ),
+  swipe: (
+    <>
+      <rect x="3" y="3" width="20" height="12" rx="1" />
+      <path d="M25 5v8" />
+      <rect x="3" y="18" width="20" height="7" rx="1" />
+      <path d="M25 19.5v4" />
+    </>
+  ),
+  fullscreen: (
+    <>
+      <rect x="5" y="2" width="18" height="11" rx="1" />
+      <rect x="5" y="15" width="18" height="11" rx="1" />
+      <path d="M11 8h6M11 21h6" />
+    </>
+  ),
+  compact: (
+    <>
+      <rect x="4" y="3" width="20" height="4" rx="1" />
+      <rect x="4" y="9" width="20" height="3" rx="1" />
+      <rect x="4" y="14" width="20" height="3" rx="1" />
+      <rect x="4" y="19" width="20" height="3" rx="1" />
+      <rect x="4" y="24" width="20" height="2" rx="1" />
+    </>
+  ),
   showcase: (
     <>
       <rect x="3" y="3" width="12" height="12" rx="1" />

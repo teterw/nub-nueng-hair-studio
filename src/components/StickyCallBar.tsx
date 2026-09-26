@@ -9,7 +9,7 @@ export function StickyCallBar() {
   const { contact } = shop;
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-20 border-t border-line-strong bg-bg/97 backdrop-blur-sm sm:hidden">
+    <div className="site-callbar fixed inset-x-0 bottom-0 z-20 border-t border-line-strong bg-bg/97 backdrop-blur-sm sm:hidden">
       <div className="grid grid-cols-2 gap-2 px-3 py-2.5 pb-[calc(0.625rem+env(safe-area-inset-bottom))]">
         <a
           href={contact.lineUrl}

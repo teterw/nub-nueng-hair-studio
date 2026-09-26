@@ -60,6 +60,11 @@ function remember(storageKey: string, param: string, value: string) {
   }
 }
 
+const layoutGroups = [
+  { title: "เน้นมือถือ", items: layouts.filter((l) => l.mobileFirst) },
+  { title: "ทั่วไป", items: layouts.filter((l) => !l.mobileFirst) },
+];
+
 export function DesignPicker() {
   const [open, setOpen] = useState(false);
   const activeTheme = useSyncExternalStore(subscribeToAttr, readTheme, () => defaultTheme);
@@ -201,35 +206,44 @@ export function DesignPicker() {
             <h2 id="picker-layout" className="text-sm font-semibold leading-snug">
               รูปแบบหน้าเว็บ
             </h2>
-            <ul className="mt-2 space-y-1.5">
-              {layouts.map((layout) => {
-                const on = layout.id === activeLayout;
-                return (
-                  <li key={layout.id}>
-                    <button
-                      type="button"
-                      onClick={() => chooseLayout(layout.id)}
-                      aria-current={on ? "true" : undefined}
-                      className={`${optionBase} ${on ? optionOn : optionOff}`}
-                    >
-                      <span className="mt-0.5 shrink-0 text-ink/70">
-                        <LayoutGlyph id={layout.id} />
-                      </span>
 
-                      <span className="min-w-0">
-                        <span className="block text-sm leading-snug">
-                          {layout.label}
-                          {on ? <span className="text-accent"> (ใช้อยู่)</span> : null}
-                        </span>
-                        <span className="mt-0.5 block text-xs leading-snug text-ink/70">
-                          {layout.blurb}
-                        </span>
-                      </span>
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
+            {/* Mobile-first formats lead, because nearly every visitor arrives
+                from Facebook on a phone. The rest mostly show their hand on a
+                desktop, so they come second rather than first. */}
+            {layoutGroups.map((group) => (
+              <div key={group.title} className="mt-3">
+                <p className="text-xs text-accent">{group.title}</p>
+                <ul className="mt-1.5 space-y-1.5">
+                  {group.items.map((layout) => {
+                    const on = layout.id === activeLayout;
+                    return (
+                      <li key={layout.id}>
+                        <button
+                          type="button"
+                          onClick={() => chooseLayout(layout.id)}
+                          aria-current={on ? "true" : undefined}
+                          className={`${optionBase} ${on ? optionOn : optionOff}`}
+                        >
+                          <span className="mt-0.5 shrink-0 text-ink/70">
+                            <LayoutGlyph id={layout.id} />
+                          </span>
+
+                          <span className="min-w-0">
+                            <span className="block text-sm leading-snug">
+                              {layout.label}
+                              {on ? <span className="text-accent"> (ใช้อยู่)</span> : null}
+                            </span>
+                            <span className="mt-0.5 block text-xs leading-snug text-ink/70">
+                              {layout.blurb}
+                            </span>
+                          </span>
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            ))}
           </section>
 
           <p className="mt-4 border-t border-line pt-2 text-xs leading-snug text-ink/70">

@@ -181,10 +181,10 @@
 }
 
 /* ---------------------------------------------------------------------------
-   The five page formats
+   Page formats
    A second axis, independent of the colour styles above: these re-arrange the
-   same markup rather than recolouring it. All but the section menu are pure
-   CSS, which is why any format composes with any style.
+   same markup rather than recolouring it. All but the section menu and the app
+   tab bar are pure CSS, which is why any format composes with any style.
    --------------------------------------------------------------------------- */
 
 /* The menu only exists in the มีเมนู format. display:none takes it out of the
@@ -366,6 +366,339 @@
     grid-column: span 2;
     grid-row: span 2;
   }
+}
+
+/* ---------------------------------------------------------------------------
+   Mobile-first formats
+   Nearly every visitor arrives from Facebook on a phone, so these four change
+   what the phone sees rather than what a desktop sees. Each is still pure CSS
+   apart from the tab bar's markup.
+   --------------------------------------------------------------------------- */
+
+/* แบบแอป — a bottom tab bar instead of the plain LINE/call bar. Four targets:
+   the two things people look at, the one they check, the one they came to do. */
+.site-tabbar {
+  display: none;
+}
+
+[data-layout="app"] .site-tabbar {
+  display: block;
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 20;
+  border-top: 1px solid var(--color-line-strong);
+  background-color: color-mix(in oklab, var(--color-bg) 95%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+/* Only one bar at the bottom. Two on a 375px screen is most of the screen. */
+[data-layout="app"] .site-callbar {
+  display: none;
+}
+
+.site-tabbar-list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  padding: 0.3rem 0.3rem calc(0.3rem + env(safe-area-inset-bottom));
+}
+
+.site-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  border-radius: var(--radius);
+  padding: 0.45rem 0.2rem;
+  font-size: 0.75rem;
+  line-height: 1.3;
+  transition: background-color 150ms;
+}
+
+.site-tab:hover {
+  background-color: color-mix(in oklab, var(--color-ink) 8%, transparent);
+}
+
+/* The one action, coloured like the primary button everywhere else. */
+[data-layout="app"] .site-tab-cta {
+  color: var(--color-accent);
+}
+
+@media (min-width: 640px) {
+  /* A tab bar on a desktop is a phone affordance in the wrong place. */
+  [data-layout="app"] .site-tabbar {
+    display: none;
+  }
+}
+
+/* เลื่อนข้าง — the two picture-led sections turn into swipeable strips, which
+   is how a phone wants to browse them and takes a lot of height out of the
+   page. Desktop keeps the grids; sideways scrolling with a mouse is a chore. */
+@media (max-width: 639px) {
+  [data-layout="swipe"] #gallery ul,
+  [data-layout="swipe"] #reviews ul {
+    display: flex;
+    gap: 0.75rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  [data-layout="swipe"] #gallery ul::-webkit-scrollbar,
+  [data-layout="swipe"] #reviews ul::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Under a full width on purpose: the next card peeking past the edge is the
+     only honest hint that the strip scrolls sideways. Widening these to 100%
+     makes the strip look like a single static card. */
+  [data-layout="swipe"] #gallery li,
+  [data-layout="swipe"] #reviews li {
+    flex: 0 0 68%;
+    scroll-snap-align: start;
+  }
+
+  [data-layout="swipe"] #reviews li {
+    flex-basis: 78%;
+  }
+
+  [data-layout="swipe"] #gallery li {
+    aspect-ratio: 1 / 1;
+  }
+}
+
+/* เต็มจอ — one topic per screen, snapping as you go. `proximity`, not
+   `mandatory`: บริการ is taller than a phone screen, and mandatory snapping
+   fights you when a section does not fit. 100svh, not 100vh, so the section
+   does not jump when mobile browser chrome slides away. */
+[data-layout="fullscreen"] {
+  scroll-snap-type: y proximity;
+}
+
+[data-layout="fullscreen"] .site-hero,
+[data-layout="fullscreen"] .site-section {
+  scroll-snap-align: start;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+[data-layout="fullscreen"] .site-hero {
+  justify-content: flex-end;
+}
+
+[data-layout="fullscreen"] .site-section-inner {
+  width: 100%;
+}
+
+@media (max-width: 639px) {
+  [data-layout="fullscreen"] .site-section-inner {
+    padding-block: 3rem;
+  }
+
+  /* Given a whole screen, the titles can carry it. */
+  [data-layout="fullscreen"] .site-section h2 {
+    font-size: 1.9rem;
+  }
+}
+
+/* กระชับ — same content, far less scrolling. Only the spacing and scale move;
+   nothing is hidden or dropped. */
+@media (max-width: 639px) {
+  [data-layout="compact"] {
+    font-size: 15px;
+  }
+
+  [data-layout="compact"] body {
+    line-height: 1.6;
+  }
+
+  [data-layout="compact"] .site-section-inner {
+    padding-block: 2rem;
+  }
+
+  [data-layout="compact"] .site-section h2 {
+    font-size: 1.3rem;
+  }
+
+  [data-layout="compact"] .site-hero-body {
+    padding-top: 1.5rem;
+  }
+
+  [data-layout="compact"] .site-hero .logo-mask {
+    height: 5rem;
+    width: 5rem;
+  }
+
+  [data-layout="compact"] .site-hero h1 {
+    font-size: 1.6rem;
+  }
+
+  [data-layout="compact"] .site-hero-strokes svg {
+    height: 56px;
+  }
+
+  /* Three across instead of two: the tiles are placeholders, and seeing all
+     six at once says more than seeing two large empty ones. */
+  [data-layout="compact"] #gallery ul {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.5rem;
+  }
+
+  [data-layout="compact"] #gallery li {
+    aspect-ratio: 1 / 1;
+  }
+
+  [data-layout="compact"] #reviews ul {
+    gap: 0.5rem;
+  }
+}
+
+/* สองฝั่ง on a phone: the desktop idea is that the shop's identity stays put
+   while everything else moves. A sticky panel cannot work at 375px, so the
+   phone gets the compact version of the same thought — the logo beside the
+   name instead of a tall centred stack, which reads as a letterhead and gives
+   the first screen back to the content. */
+@media (max-width: 899px) {
+  [data-layout="split"] .site-hero-body {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 0.85rem;
+    text-align: left;
+    /* Clears the design picker. This is the only format whose first line of
+       text reaches the top-right corner, so it is the only one that collides. */
+    padding-top: 3.75rem;
+  }
+
+  [data-layout="split"] .site-hero .logo-mask {
+    grid-row: span 2;
+    height: 4.5rem;
+    width: 4.5rem;
+    margin: 0;
+  }
+
+  [data-layout="split"] .site-hero h1 {
+    margin-top: 0;
+    font-size: 1.5rem;
+  }
+
+  [data-layout="split"] .site-hero-body > p {
+    margin: 0;
+    grid-column: 2;
+  }
+
+  [data-layout="split"] .site-hero-body > p + p {
+    display: none;
+  }
+
+  [data-layout="split"] .site-hero-body > div:last-child {
+    grid-column: 1 / -1;
+    margin-top: 1rem;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Format signatures
+   Each format gets one detail that belongs only to it, so no two read as the
+   same page with different spacing. All of them treat the section title, which
+   is the element every format has in the same place.
+   --------------------------------------------------------------------------- */
+
+/* คลาสสิก — a short rule under each title, the way a printed page marks a new
+   part. Ties the default back to the hairlines it is built from. */
+[data-layout="classic"] .site-section h2::after {
+  content: "";
+  display: block;
+  width: 2.5rem;
+  height: 1px;
+  margin-top: 0.7rem;
+  background-color: var(--color-rule);
+}
+
+/* แบบแอป — a short, thicker accent bar, the shape of an active tab indicator,
+   so the page reads in the same language as the tab bar at the bottom. */
+[data-layout="app"] .site-section h2::after {
+  content: "";
+  display: block;
+  width: 1.75rem;
+  height: 2px;
+  margin-top: 0.55rem;
+  border-radius: 2px;
+  background-color: var(--color-accent);
+}
+
+/* การ์ด — the title becomes the card's header, divided from its contents.
+   Inside a panel a floating heading looks unmoored. */
+[data-layout="cards"] .site-section h2 {
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid var(--color-line);
+}
+
+/* กระชับ — a run-in heading with the rule carrying to the edge. Says "new
+   section" in one line instead of the three a stacked title and margin take. */
+@media (max-width: 639px) {
+  [data-layout="compact"] .site-section h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  [data-layout="compact"] .site-section h2::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background-color: var(--color-line-strong);
+  }
+}
+
+/* เต็มจอ — with a whole screen per topic the title can be the screen, so it is
+   set far larger than anywhere else and given room above the content. */
+[data-layout="fullscreen"] .site-section h2 {
+  font-size: 2.1rem;
+  margin-bottom: 0.5rem;
+}
+
+@media (min-width: 640px) {
+  [data-layout="fullscreen"] .site-section h2 {
+    font-size: 2.75rem;
+  }
+}
+
+/* เลื่อนข้าง — the strips fade out at the right edge rather than stopping dead,
+   which reads as "there is more this way" without adding an arrow or a dot row. */
+@media (max-width: 639px) {
+  [data-layout="swipe"] #gallery ul,
+  [data-layout="swipe"] #reviews ul {
+    -webkit-mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 2.25rem), transparent 100%);
+    mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 2.25rem), transparent 100%);
+  }
+}
+
+/* มีเมนู — the title repeats the menu's pill shape, so a heading and its menu
+   item look like the same object in two places. */
+[data-layout="nav"] .site-section h2 {
+  display: inline-block;
+  margin-left: -0.7rem;
+  border-radius: var(--radius);
+  padding: 0.15rem 0.7rem;
+  background-color: color-mix(in oklab, var(--color-ink) 6%, transparent);
+}
+
+/* สองฝั่ง — the panel already carries the identity, so sections announce
+   themselves with a rule above the title rather than competing with it. */
+[data-layout="split"] .site-section h2 {
+  padding-top: 0.9rem;
+  border-top: 2px solid var(--color-ink);
+  display: inline-block;
+}
+
+/* โชว์ผลงาน — work leads, so the gallery's own title steps back to a quiet
+   label and the pictures do the talking. */
+[data-layout="showcase"] #gallery h2 {
+  font-size: 1.1rem;
+  opacity: 0.75;
 }
 
 /* ---------------------------------------------------------------------------
