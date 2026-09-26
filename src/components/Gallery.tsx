@@ -18,7 +18,7 @@ export function Gallery() {
   return (
     <Section id="gallery" title="ผลงาน" bleed>
       {hasPhotos ? null : (
-        <p className="mt-3 max-w-[42ch] px-5 text-sm leading-relaxed text-coffee/70 sm:px-8">
+        <p className="mt-3 max-w-[42ch] px-5 text-sm leading-relaxed text-ink/70 sm:px-8">
           กำลังรวบรวมรูปผลงานจริงจากทางร้าน ช่องด้านล่างคือตำแหน่งที่รูปจะขึ้น
         </p>
       )}
@@ -27,7 +27,7 @@ export function Gallery() {
         {shop.gallery.map((tile) => (
           <li
             key={tile.id}
-            className="relative aspect-4/5 overflow-hidden rounded-[3px] border border-line bg-paper/70"
+            className="relative aspect-4/5 overflow-hidden rounded-[var(--radius)] border border-line bg-surface/70"
           >
             {tile.image ? (
               <Image

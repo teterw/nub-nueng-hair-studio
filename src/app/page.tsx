@@ -7,6 +7,7 @@ import { HoursMap } from "@/components/HoursMap";
 import { Reviews } from "@/components/Reviews";
 import { Services } from "@/components/Services";
 import { StickyCallBar } from "@/components/StickyCallBar";
+import { StyleSwitcher } from "@/components/StyleSwitcher";
 
 export default function Home() {
   return (
@@ -25,6 +26,7 @@ export default function Home() {
         <Footer />
       </div>
       <StickyCallBar />
+      <StyleSwitcher />
     </>
   );
 }

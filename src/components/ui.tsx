@@ -6,11 +6,11 @@ export function linkProps(href: string) {
 }
 
 export const buttonBase =
-  "inline-flex items-center justify-center rounded-[3px] px-6 py-3 text-base leading-none transition-colors";
+  "inline-flex items-center justify-center rounded-[var(--radius)] px-6 py-3 text-base leading-none transition-colors";
 
-export const buttonSolid = `${buttonBase} bg-coffee text-cream hover:bg-coffee/88`;
+export const buttonSolid = `${buttonBase} bg-cta text-cta-ink hover:bg-cta/88`;
 
-export const buttonOutline = `${buttonBase} border border-line-strong text-coffee hover:bg-coffee/6`;
+export const buttonOutline = `${buttonBase} border border-line-strong text-ink hover:bg-ink/6`;
 
 /**
  * Sections are separated by a single hairline rather than cards or shadows —

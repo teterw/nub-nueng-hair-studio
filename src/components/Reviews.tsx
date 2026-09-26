@@ -12,7 +12,7 @@ export function Reviews() {
     <Section id="reviews" title={shop.reviews.heading}>
       <ul className="mt-7 grid gap-3 sm:grid-cols-3 sm:gap-4">
         {slots.map((i) => (
-          <li key={i} className="rounded-[3px] border border-line bg-paper/70 p-5">
+          <li key={i} className="rounded-[var(--radius)] border border-line bg-surface/70 p-5">
             {/* Blank ruled lines where the quote will sit. */}
             <div aria-hidden="true" className="space-y-2.5">
               <span className="block h-px w-full bg-line-strong" />
@@ -22,7 +22,7 @@ export function Reviews() {
 
             <p className="mt-5 text-sm leading-snug">
               {shop.reviews.placeholderLabel}
-              <span className="mt-0.5 block text-xs text-brass-ink">
+              <span className="mt-0.5 block text-xs text-accent">
                 {shop.reviews.placeholderNote}
               </span>
             </p>

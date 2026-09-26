@@ -54,7 +54,7 @@ export function HairGlyph({ glyph }: { glyph: GalleryItem["glyph"] }) {
       viewBox="0 0 48 48"
       aria-hidden="true"
       focusable="false"
-      className="h-12 w-12 text-coffee/45"
+      className="h-12 w-12 text-ink/45"
     >
       <g fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
         {paths[glyph].map((d) => (

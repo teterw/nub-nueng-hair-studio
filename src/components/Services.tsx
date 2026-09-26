@@ -21,12 +21,12 @@ export function Services() {
                     <dt className="shrink-0">{item.name}</dt>
                     <span
                       aria-hidden="true"
-                      className="mb-[0.42em] min-w-6 flex-1 border-b border-dotted border-brass/70"
+                      className="mb-[0.42em] min-w-6 flex-1 border-b border-dotted border-rule/70"
                     />
-                    <dd className="shrink-0 text-coffee/75">{item.price}</dd>
+                    <dd className="shrink-0 text-ink/75">{item.price}</dd>
                   </div>
                   {item.note ? (
-                    <p className="mt-0.5 max-w-[38ch] text-sm leading-relaxed text-coffee/70">
+                    <p className="mt-0.5 max-w-[38ch] text-sm leading-relaxed text-ink/70">
                       {item.note}
                     </p>
                   ) : null}
@@ -37,7 +37,7 @@ export function Services() {
         ))}
       </div>
 
-      <p className="mt-10 max-w-[46ch] border-t border-line pt-5 text-sm leading-relaxed text-coffee/70">
+      <p className="mt-10 max-w-[46ch] border-t border-line pt-5 text-sm leading-relaxed text-ink/70">
         {shop.priceNote}
       </p>
     </Section>

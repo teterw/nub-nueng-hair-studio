@@ -11,7 +11,7 @@ export function About() {
         ))}
       </div>
 
-      <p className="mt-7 border-t border-line pt-5 text-sm text-coffee/70">
+      <p className="mt-7 border-t border-line pt-5 text-sm text-ink/70">
         {shop.about.productsLine}
       </p>
     </Section>

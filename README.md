@@ -59,6 +59,71 @@ Resize to roughly **1000px on the long edge** before committing. The site uses
 `images: { unoptimized: true }` (required for static export), so whatever you
 commit is what phones download.
 
+## Choosing a style
+
+The demo ships with six complete looks, switchable from the **เปลี่ยนสไตล์**
+button in the top-right corner. Same content in every one — only the palette,
+the two typefaces, the corner radius and how the hero strokes are drawn change.
+
+| id | ชื่อ | what it's going for |
+|----|------|---------------------|
+| `vintage` | วินเทจ | Coffee on cream, straight off the logo. Thai serif, hairlines, paper grain. |
+| `minimal` | มินิมอล | Near-white, square corners, one grey-brown accent, maximum air. |
+| `night` | กลางคืน | Deep espresso with gold. The only dark style. |
+| `soft` | ละมุน | Rounded corners, dusty sage, the friendliest of the six. |
+| `studio` | สตูดิโอ | Crisp white, heavier display type, deep teal. |
+| `blush` | บูทีค | Ivory with a plum ink. Delicate without tipping into pink. |
+
+**Every style is a shareable link.** `?style=night` opens the page in that look,
+applied before the first paint so there is no flash. Send the owner six links
+instead of asking them to find the button:
+
+```
+https://<your-domain>/?style=vintage
+https://<your-domain>/?style=minimal
+https://<your-domain>/?style=night
+https://<your-domain>/?style=soft
+https://<your-domain>/?style=studio
+https://<your-domain>/?style=blush
+```
+
+A pick made with the button is remembered in `localStorage` and written into the
+URL, so the address bar always links to whatever is on screen.
+
+### How it works
+
+A style is only a set of CSS custom properties under `[data-theme="<id>"]` in
+[`src/app/globals.css`](src/app/globals.css). No component knows a style exists —
+they all name tokens (`bg-bg`, `text-ink`, `text-accent`, `border-line`) and
+never a colour. To edit a look, change its block. To add one, copy a block, give
+it an id, and add an entry to [`src/data/themes.ts`](src/data/themes.ts).
+
+The swatches in the picker are not hardcoded colours. Each is a real element
+tagged with `data-theme`, so it renders in that style's own tokens and cannot
+drift when a palette is edited.
+
+The logo is painted as a CSS mask rather than an `<img>`, which is what lets it
+take the ink colour of each style — otherwise กลางคืน would show a brown logo on
+a near-black page.
+
+### Once the owner has picked
+
+The picker is a tool for choosing, not part of the shop's site. To ship the
+chosen look:
+
+1. Delete `src/components/StyleSwitcher.tsx` and its two lines in
+   `src/app/page.tsx`.
+2. In `globals.css`, move the winning style's values into the `@theme` block and
+   delete all six `[data-theme]` blocks.
+3. In `src/app/layout.tsx`, delete the font definitions the winner doesn't use,
+   along with `themeInitScript` and the `<head>` script tag.
+4. Delete `src/data/themes.ts`.
+
+Worth doing rather than leaving: the demo declares eight typefaces so any style
+can be picked instantly. Only the active style's two are actually downloaded
+(the rest are `preload: false`), but pruning drops the repo back to two faces and
+keeps the build honest.
+
 ## Deploying to Vercel
 
 The build is a plain static export, so there is nothing to configure.

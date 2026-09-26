@@ -1,35 +1,199 @@
 @import "tailwindcss";
 
+/* ---------------------------------------------------------------------------
+   Tokens
+   Every colour, typeface and radius on the page comes from one of these. The
+   values below are the default (วินเทจ) style; each [data-theme] block further
+   down replaces them. Components only ever name the token, never a colour, so
+   restyling the whole site is a matter of swapping these.
+   --------------------------------------------------------------------------- */
 @theme {
-  /* Sampled directly out of logo.jpg — these are the shop's own two colours. */
-  --color-cream: #f2e8df;
-  --color-coffee: #3e1f02;
-  /* Recessed surfaces: gallery tiles, review placeholders. */
-  --color-paper: #e7d8ca;
-  /* Rules and marks only — 2.9:1 on cream, so never used for text. */
-  --color-brass: #a07d42;
-  /* The text-safe brass: 5.2:1 on cream, 4.7:1 on paper. */
-  --color-brass-ink: #7a5a24;
+  --color-bg: #f2e8df;
+  --color-surface: #e7d8ca;
+  --color-ink: #3e1f02;
+  /* Text-safe accent — used for small labels, so it must clear 4.5:1 on both
+     --color-bg and --color-surface in every theme. */
+  --color-accent: #7a5a24;
+  /* Decorative only: dotted price leaders, the note rule. Never text. */
+  --color-rule: #a07d42;
   --color-line: rgba(62, 31, 2, 0.16);
   --color-line-strong: rgba(62, 31, 2, 0.34);
+  /* The primary button. Most themes use ink-on-bg; some invert it. */
+  --color-cta: #3e1f02;
+  --color-cta-ink: #f2e8df;
 
   --font-display: var(--font-trirong), Georgia, serif;
   --font-body: var(--font-anuphan), ui-sans-serif, system-ui, sans-serif;
 }
 
+/* Non-colour tokens. Not in @theme because they are used through var() in
+   arbitrary values rather than generating their own utilities. */
 :root {
+  --radius: 3px;
+  --display-weight: 600;
+  --display-leading: 1.3;
+  /* Hero strokes: each theme renders the same three paths differently. */
+  --stroke-1: 1.8px;
+  --stroke-2: 1.1px;
+  --stroke-3: 0.8px;
+  --stroke-opacity-1: 0.9;
+  --stroke-opacity-2: 0.55;
+  --stroke-opacity-3: 0.3;
+  /* Named so a theme can suppress the paper grain without restating the URL. */
+  --grain-opacity: 1;
   color-scheme: light;
 }
+
+/* ---------------------------------------------------------------------------
+   The six styles
+   Written unlayered and as a bare attribute selector on purpose: unlayered
+   rules beat Tailwind's @layer theme regardless of specificity, and a bare
+   [data-theme] also applies to nested elements — which is what lets the style
+   picker render true swatches by tagging a <span> with the theme id.
+   --------------------------------------------------------------------------- */
+
+/* มินิมอล — near-white, square corners, one grey-brown accent, maximum air. */
+[data-theme="minimal"] {
+  --color-bg: #fafaf7;
+  --color-surface: #efefe9;
+  --color-ink: #2e2a24;
+  --color-accent: #5c5245;
+  --color-rule: #b4aa9a;
+  --color-line: rgba(46, 42, 36, 0.14);
+  --color-line-strong: rgba(46, 42, 36, 0.3);
+  --color-cta: #2e2a24;
+  --color-cta-ink: #fafaf7;
+  --font-display: var(--font-plex-thai), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-plex-thai), ui-sans-serif, system-ui, sans-serif;
+  --radius: 0px;
+  --display-weight: 600;
+  --display-leading: 1.25;
+  /* One stroke, hairline. Restraint is the whole point of this style. */
+  --stroke-1: 1px;
+  --stroke-2: 0;
+  --stroke-3: 0;
+  --stroke-opacity-1: 0.5;
+  --stroke-opacity-2: 0;
+  --stroke-opacity-3: 0;
+  --grain-opacity: 0;
+}
+
+/* กลางคืน — deep espresso with gold. The only dark style. */
+[data-theme="night"] {
+  --color-bg: #17110e;
+  --color-surface: #221a15;
+  --color-ink: #f0e4d8;
+  --color-accent: #d9b356;
+  --color-rule: #8a6d34;
+  --color-line: rgba(240, 228, 216, 0.16);
+  --color-line-strong: rgba(240, 228, 216, 0.32);
+  --color-cta: #d9b356;
+  --color-cta-ink: #17110e;
+  --font-display: var(--font-charm), Georgia, serif;
+  --font-body: var(--font-plex-thai), ui-sans-serif, system-ui, sans-serif;
+  --radius: 2px;
+  --display-weight: 700;
+  --display-leading: 1.4;
+  --stroke-1: 1.6px;
+  --stroke-2: 1px;
+  --stroke-3: 0.8px;
+  --stroke-opacity-1: 0.85;
+  --stroke-opacity-2: 0.5;
+  --stroke-opacity-3: 0.28;
+  --stroke-color: #d9b356;
+  --grain-opacity: 0;
+  color-scheme: dark;
+}
+
+/* ละมุน — rounded, warm, dusty sage. The friendliest of the six. */
+[data-theme="soft"] {
+  --color-bg: #fbf6f2;
+  --color-surface: #f1e7de;
+  --color-ink: #3a322c;
+  --color-accent: #55684a;
+  --color-rule: #a9b79d;
+  --color-line: rgba(58, 50, 44, 0.14);
+  --color-line-strong: rgba(58, 50, 44, 0.28);
+  --color-cta: #3a322c;
+  --color-cta-ink: #fbf6f2;
+  --font-display: var(--font-mitr), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-anuphan), ui-sans-serif, system-ui, sans-serif;
+  --radius: 16px;
+  --display-weight: 500;
+  --display-leading: 1.45;
+  --stroke-1: 2.4px;
+  --stroke-2: 1.6px;
+  --stroke-3: 1px;
+  --stroke-opacity-1: 0.7;
+  --stroke-opacity-2: 0.4;
+  --stroke-opacity-3: 0.22;
+  --grain-opacity: 0;
+}
+
+/* สตูดิโอ — crisp white, heavier display type, deep teal. */
+[data-theme="studio"] {
+  --color-bg: #ffffff;
+  --color-surface: #f1f4f3;
+  --color-ink: #17211f;
+  --color-accent: #145c55;
+  --color-rule: #8fb2ad;
+  --color-line: rgba(23, 33, 31, 0.14);
+  --color-line-strong: rgba(23, 33, 31, 0.3);
+  --color-cta: #145c55;
+  --color-cta-ink: #ffffff;
+  --font-display: var(--font-kanit), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-noto-thai), ui-sans-serif, system-ui, sans-serif;
+  --radius: 4px;
+  --display-weight: 500;
+  --display-leading: 1.35;
+  --stroke-1: 2.6px;
+  --stroke-2: 1.4px;
+  --stroke-3: 0;
+  --stroke-opacity-1: 0.85;
+  --stroke-opacity-2: 0.35;
+  --stroke-opacity-3: 0;
+  --grain-opacity: 0;
+}
+
+/* บูทีค — ivory with a plum ink. Delicate without tipping into pink. */
+[data-theme="blush"] {
+  --color-bg: #faf3f0;
+  --color-surface: #f2e4df;
+  --color-ink: #402730;
+  --color-accent: #7d4257;
+  --color-rule: #c49aa4;
+  --color-line: rgba(64, 39, 48, 0.16);
+  --color-line-strong: rgba(64, 39, 48, 0.32);
+  --color-cta: #402730;
+  --color-cta-ink: #faf3f0;
+  --font-display: var(--font-pridi), Georgia, serif;
+  --font-body: var(--font-anuphan), ui-sans-serif, system-ui, sans-serif;
+  --radius: 2px;
+  --display-weight: 500;
+  --display-leading: 1.4;
+  --stroke-1: 1.4px;
+  --stroke-2: 0.9px;
+  --stroke-3: 0.7px;
+  --stroke-opacity-1: 0.8;
+  --stroke-opacity-2: 0.45;
+  --stroke-opacity-3: 0.25;
+  --grain-opacity: 0;
+}
+
+/* ---------------------------------------------------------------------------
+   Base
+   --------------------------------------------------------------------------- */
 
 html {
   scroll-behavior: smooth;
   /* Keep anchored sections clear of the sticky call bar on small screens. */
   scroll-padding-block-start: 1.5rem;
+  background-color: var(--color-bg);
 }
 
 body {
-  background-color: var(--color-cream);
-  color: var(--color-coffee);
+  background-color: var(--color-bg);
+  color: var(--color-ink);
   font-family: var(--font-body);
   /* Thai needs more leading than Latin to keep tone marks from crowding, but
      1.85 everywhere also loosened rows that want to read as one line. Paragraphs
@@ -37,34 +201,59 @@ body {
   line-height: 1.75;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
 
-  /* Faint paper tooth, so the flat cream reads as printed stock. */
+/* Faint paper tooth, so flat colour reads as printed stock. Only วินเทจ wants
+   it; the others set --grain-opacity to 0 and the layer disappears. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: var(--grain-opacity);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
 }
 
-/* Only one display weight is loaded, so pin it — a browser-faked bold would
-   thicken the serifs and lose the contrast that made this face the right one.
+/* Display type. Only one weight per face is loaded, so pin it — a faked bold
+   would thicken the serifs and lose the contrast that picked the face.
    Thai takes no tracking; letter-spacing here would only break the clusters. */
 .font-display {
-  font-weight: 600;
-  line-height: 1.3;
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  line-height: var(--display-leading);
   letter-spacing: normal;
 }
 
-/* One visible focus treatment everywhere, brand-coloured rather than the UA blue. */
+/* One visible focus treatment everywhere, themed rather than the UA blue. */
 :focus-visible {
-  outline: 2px solid var(--color-coffee);
+  outline: 2px solid var(--color-ink);
   outline-offset: 3px;
 }
 
-/* The single orchestrated moment: the hero strokes draw themselves once on load.
- *
- * The resting state is fully drawn (offset 0) and the animation only reveals
- * them, via `backwards` fill. Written the other way round — hidden at rest,
- * revealed by the animation — the strokes vanish entirely wherever animations
- * do not run (throttled background tabs, animation-blocking extensions). This
- * way the worst case is that they simply appear without drawing.
- */
+/* The logo is a single-colour alpha matte, so it is painted as a mask rather
+   than drawn as an image. That way it takes the ink colour of whichever theme
+   is active — otherwise the dark style would show a brown logo on near-black.
+   It is decorative: the <h1> underneath carries the shop name as text. */
+.logo-mask {
+  background-color: var(--color-ink);
+  -webkit-mask-image: url("/logo.png");
+  mask-image: url("/logo.png");
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+/* ---------------------------------------------------------------------------
+   Motion
+   Two moments, both once and both on load: the hero block settles in, and the
+   hair strokes draw themselves. Nothing animates on scroll — a reveal on every
+   section is the thing that makes a page feel machine-made.
+   --------------------------------------------------------------------------- */
+
 @keyframes draw-stroke {
   from {
     stroke-dashoffset: var(--stroke-len);
@@ -74,17 +263,66 @@ body {
   }
 }
 
+@keyframes hero-settle {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Resting state is arrived-at, and the animation only plays it in, via
+   `backwards` fill. Written the other way round — hidden at rest, revealed by
+   the animation — the content vanishes entirely wherever animations do not run
+   (throttled background tabs, animation-blocking extensions). This way the
+   worst case is that it simply appears without moving. */
+.hero-enter > * {
+  animation: hero-settle 0.7s cubic-bezier(0.22, 0.7, 0.3, 1) backwards;
+}
+
+.hero-enter > *:nth-child(1) {
+  animation-delay: 0.05s;
+}
+.hero-enter > *:nth-child(2) {
+  animation-delay: 0.16s;
+}
+.hero-enter > *:nth-child(3) {
+  animation-delay: 0.25s;
+}
+.hero-enter > *:nth-child(4) {
+  animation-delay: 0.33s;
+}
+.hero-enter > *:nth-child(5) {
+  animation-delay: 0.42s;
+}
+
+/* Strokes take the ink colour unless a style names another — กลางคืน draws them
+   in gold, which reads far better than cream on near-black. */
+.hero-stroke {
+  color: var(--stroke-color, var(--color-ink));
+}
+
 .hero-stroke path {
   stroke-dasharray: var(--stroke-len);
   stroke-dashoffset: 0;
   animation: draw-stroke 2.2s cubic-bezier(0.33, 0.1, 0.25, 1) backwards;
 }
 
+.hero-stroke path:nth-child(1) {
+  stroke-width: var(--stroke-1);
+  opacity: var(--stroke-opacity-1);
+}
 .hero-stroke path:nth-child(2) {
+  stroke-width: var(--stroke-2);
+  opacity: var(--stroke-opacity-2);
   animation-delay: 0.32s;
 }
-
 .hero-stroke path:nth-child(3) {
+  stroke-width: var(--stroke-3);
+  opacity: var(--stroke-opacity-3);
   animation-delay: 0.6s;
 }
 
@@ -93,7 +331,8 @@ body {
     scroll-behavior: auto;
   }
 
-  .hero-stroke path {
+  .hero-stroke path,
+  .hero-enter > * {
     animation: none;
   }
 

@@ -19,7 +19,7 @@ export function Contact() {
       </div>
 
       {/* The shop's own request — chat notifications don't arrive without it. */}
-      <p className="mt-7 max-w-[44ch] border-l-2 border-brass py-1 pl-4 text-sm leading-relaxed">
+      <p className="mt-7 max-w-[44ch] border-l-2 border-rule py-1 pl-4 text-sm leading-relaxed">
         {contact.lineNote}
       </p>
     </Section>
